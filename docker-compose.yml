@@ -1,0 +1,10 @@
+services:
+  freeswitch:
+    image: freeswitch:latest
+    container_name: freeswitch
+    volumes:
+      - ./freeswitch:/etc/freeswitch    # Mount local FreeSWITCH config directory
+      - ./freeswitch_logs:/var/log/freeswitch  # Mount for log persistence
+    network_mode: "host"                # Enable host networking
+    environment:
+      - VARIABLE_NAME=value             # Define necessary environment variables
