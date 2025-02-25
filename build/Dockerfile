@@ -8,9 +8,6 @@ ARG TOKEN
 ENV USER=${USER}
 ENV TOKEN=${TOKEN}
 
-# ENV USER=freeswitch-dev
-# ENV TOKEN=pat_j2UPAAc8kRT2ZmkStZkEDUNr
-
 # Install essential build tools and development libraries
 RUN apt-get update && apt-get install -y gnupg2 wget lsb-release ca-certificates
 
