@@ -1,6 +1,6 @@
 services:
   freeswitch:
-    image: freeswitch:latest
+    image: freeswitch:arm64
     container_name: freeswitch
     volumes:
       - ./freeswitch:/etc/freeswitch    # Mount local FreeSWITCH config directory
