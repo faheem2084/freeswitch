@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+./freeswitch
 ./freeswitch_logs
 # testing
 /coverage

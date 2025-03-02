@@ -1,10 +1,38 @@
 services:
   freeswitch:
-    image: freeswitch:arm64
+    image: faheem2084/freeswitch:arm64
     container_name: freeswitch
     volumes:
-      - ./freeswitch:/etc/freeswitch    # Mount local FreeSWITCH config directory
-      - ./freeswitch_logs:/var/log/freeswitch  # Mount for log persistence
-    network_mode: "host"                # Enable host networking
+      - ./freeswitch:/etc/freeswitch
+      - ./freeswitch_logs:/var/log/freeswitch
+    ports:
+      - "5060:5060/udp"   # SIP UDP
+      - "5060:5060/tcp"   # SIP TCP
+      - "5080:5080/udp"   # External SIP (if needed)
+      # - "8021:8021/tcp"   # ESL
+      - "10000-10010:10000-10010/udp"  # RTP (Media)
     environment:
-      - VARIABLE_NAME=value             # Define necessary environment variables
+      - VARIABLE_NAME=value
+    networks:
+      my_custom_network:
+        ipv4_address: 172.168.33.100
+
+  dialplan:
+    image: python:3.10
+    container_name: dialplan
+    working_dir: /app
+    volumes:
+      - ./dialplan:/app
+    ports:
+      - "8000:8000"
+    command: ["sh", "-c", "pip install --no-cache-dir -r requirements.txt && uvicorn app:app --host 0.0.0.0 --port 8000"]
+    networks:
+      my_custom_network:
+        ipv4_address: 172.168.33.101
+
+networks:
+  my_custom_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.168.33.0/24
